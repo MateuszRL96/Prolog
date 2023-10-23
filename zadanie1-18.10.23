@@ -1,0 +1,88 @@
+parent( pam, bob).       % Pam is a parent of Bob
+parent( tom, bob).
+parent( tom, liz).
+parent( bob, ann).
+parent( bob, pat).
+parent( pat, jim).
+
+female( pam).            % Pam is female
+female( liz).
+female( ann).
+female( pat).
+male( jim).
+male( tom).              % Tom is male
+male( bob). 
+
+child(bob, pam). 		 % Bob is a child of Pam
+child(bob, tom).
+child(liz, tom).
+child(ann, bob).
+child(pat, bob).
+child(jim, pat).		 % zad1.3.b
+
+mother(X, Y):-parent(X,Y), female(X). % zad1.3.c
+
+grandparent(X,Z):-parent(X,Y),parent(Y,Z). % zad1.3.d
+
+sister(X, Y):-parent(Z, X), parent(Z, Y), female(X). % zad1.3.e
+
+przodek(X, Y):-parent(X,Y).
+przodek(X, Y):-parent(X,Z), przodek(Z,Y).
+
+
+% % Baza wiedzy o osobach i ich ulubionych sposobach spędzania czasu zad2
+lubi(michal, czytac).
+lubi(mateusz, jesc).
+lubi(lukasz, plywac).
+lubi(kamil, odkurzac).
+lubi(maja, sprzatac).
+lubi(kasia, gotowac).
+lubi(lidia, biegac).
+lubi(wojtek, jezdzic).
+
+wiek(michal, 20).
+wiek(mateusz, 21).
+wiek(lukasz, 22).
+wiek(kamil, 23).
+wiek(maja, 15).
+wiek(kasia, 19).
+wiek(lidia, 14).
+wiek(wojtek, 13).
+
+starszy(X, Y) :- wiek(X, WiekX), wiek(Y, WiekY), WiekX > WiekY.
+mlodszy(X, Y) :- wiek(X, WiekX), wiek(Y, WiekY), WiekX < WiekY.
+równy_wiek(X, Y) :- wiek(X, WiekX), wiek(Y, WiekY), WiekX =:= WiekY.
+
+
+% Baza faktów o rodzinie zadanie 3
+osoba(adam, bruno, clara, mezczyzna, 35).
+osoba(bruno, carl, clara, mezczyzna, 40).
+osoba(carl, -, diana, mezczyzna, 65).
+osoba(clara, -, -, kobieta, 60).
+osoba(diana, -, -, kobieta, 70).
+osoba(elena, bruno, clara, kobieta, 30).
+osoba(frank, bruno, clara, mezczyzna, 32).
+
+% Reguła określająca matkę
+matka(Dziecko, Matka) :- osoba(Dziecko, _, Matka, kobieta, _).
+
+% Reguła określająca ojca
+ojciec(Dziecko, Ojciec) :- osoba(Dziecko, Ojciec, _, mezczyzna, _).
+
+% Reguła określająca rodzeństwo
+rodzenstwo(X, Y) :- ojciec(X, Ojciec), ojciec(Y, Ojciec), matka(X, Matka), matka(Y, Matka), X \= Y.
+
+% Reguła określająca braci
+bracia(X, Y) :- rodzenstwo(X, Y), osoba(X, _, _, mezczyzna, _).
+
+% Reguła określająca siostry
+siostry(X, Y) :- rodzenstwo(X, Y), osoba(X, _, _, kobieta, _).
+
+% Reguła określająca brata
+brat(X, Y) :- bracia(X, Y), osoba(X, _, _, mezczyzna, _).
+
+% Reguła określająca siostrę
+siostra(X, Y) :- siostry(X, Y), osoba(X, _, _, kobieta, _).
+
+
+
