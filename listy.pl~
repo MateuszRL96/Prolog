@@ -1,0 +1,25 @@
+pisz([]).
+pisz([X|Y]):-write(X), nl, pisz(Y).
+
+pisz2([]).
+pisz2([X|Y]):-pisz2(Y), nl, write(X).
+
+czy_istnieje_w_liscie(X, [X|_]):-!.
+czy_istnieje_w_liscie(X, [_|O]):- czy_istnieje_w_liscie(X, O).
+ilosc_wystapien(_, [], 0):-!.
+ilosc_wystapien(X, [X|O], W):- ilosc_wystapien(X, O, W1), W is W1+1, !.
+ilosc_wystapien(X, [_|O], W):- ilosc_wystapien(X, O, W), !.
+
+ile_parzytych([], 0):-!.
+ile_parzystych([G|O], W):- R is G mod 2, R==0, ile_parzystych(O, W1), W is W1+1, !.
+ile_parzystych([G|O], W):- R is G mod 2, R\=0, ile_parzystych(O, W), !.
+
+
+dllisty(L, N):- listaakum(L, 0, N).
+
+listaakum([], A, A):-!.
+listaakum([_|O], A, N):- A1 is A+1, listaakum(O, A1, N).
+
+%count(A, [], 0).
+%count(A, [A|O], N):-count(A, O, N1), N is N+1.
+%count(A, [X|O], N):-count(A, O, N).
